@@ -1,0 +1,115 @@
+.app {
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px 10px 10px 10px;
+    max-height: 100vh;
+}
+
+.gallery-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    justify-items: center;
+    align-items: center;
+    padding: 10px 0;
+    row-gap: 10px;
+}
+
+.image-container {
+    width: 90%;
+    height: 100%;
+    border: .5px solid #ccc;
+    border-radius: 10px;
+    cursor: grab;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease-in-out;
+}
+
+.image-container img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.featured {
+    border-color: #f00;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+    transform: scale(1.2);
+}
+
+.selected {
+    border-color: rgb(233, 73, 73);
+    background-color: #383838;
+    /* transition: transform 0.3s ease-in-out; */
+}
+
+.selected:hover {
+    opacity: 0.5;
+    background-color: #383838;
+}
+
+.image-container.feature {
+    border: 2px solid #007BFF;
+    /* transform: scale(1.1); */
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    height: auto;
+    align-items: center;
+    background-color: white;
+    color: #000000;
+    padding: 0 25px;
+    border-radius: 10px 10px 0 0;
+    border-bottom: 1px solid #dddddd;
+}
+
+.button {
+    background-color: white;
+    color: rgb(255, 6, 6);
+}
+
+.button:hover {
+    text-decoration: underline;
+}
+
+.image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.hidden-input {
+    display: none;
+}
+
+.image-preview {
+    position: relative;
+    border: 2px dashed #757575;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+}
+
+.image-preview img {
+    max-width: 100%;
+    max-height: 100%;
+    color: black;
+}
+
+@media (max-width: 768px) {
+    .gallery {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
