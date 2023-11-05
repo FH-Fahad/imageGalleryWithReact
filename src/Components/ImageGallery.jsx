@@ -1,62 +1,87 @@
 import { useState, useRef } from "react";
-import "./ImageGallery.css";
 import imageData from "./imageData";
+import "./ImageGallery.css";
 
 export default function ImageGallery() {
   const [images, setImages] = useState(imageData);
 
-  const [selectedCount, setSelectedCount] = useState(0);
+  const [selectedImageCount, setSelectedImageCount] = useState(0);
 
   //Refs for drag-and-drop functionality
   const dragItem = useRef();
   const dragOverItem = useRef();
 
-  // Handle image click to select/deselect
+  // Handle image click to select/deselect functionality.
   const handleImageClick = (imageId) => {
+    // Create a copy of the images array with the selected state updated for the clicked image.
     const updatedImages = images.map((image) => {
       if (image.id === imageId) {
         return { ...image, selected: !image.selected };
       }
       return image;
     });
+    // Update the state with the modiffied images array
     setImages(updatedImages);
 
     // Update the selected count
-    setSelectedCount(updatedImages.filter((image) => image.selected).length);
+    setSelectedImageCount(
+      updatedImages.filter((image) => image.selected).length
+    );
   };
 
-  // Handle image sorting for drag-and-drop
+  // Handle the sorting of images for drag-and-drop functionality.
   const handleSort = () => {
+    // Create a copy of the images array to avoid mutating the original array.
     const _images = [...images];
 
+    // Extract the content of the dragged item and remove it from the array.
     const draggedItemContent = _images.splice(dragItem.current, 1)[0];
+
+    // Insert the dragged item at the position indicated by dragOverItem.
     _images.splice(dragOverItem.current, 0, draggedItemContent);
 
-    // Reset drag references
+    // Reset the feature property for all images except the first one.
+    _images.forEach((image, index) => {
+      if (index === 0) {
+        image.feature = true;
+      } else {
+        image.feature = false;
+      }
+    });
+
+    // Reset drag references to null.
     dragItem.current = null;
     dragOverItem.current = null;
 
-    // Update the images state with the new order
+    // Update the images state with the new order of images.
     setImages(_images);
   };
 
-  // Handle deselecting all images
+  // Handle deselecting all images.
   const handleDeselectAll = () => {
+    // Create a copy of the images array with the 'selected' property set to false for all images.
     const updatedImages = images.map((image) => ({
       ...image,
       selected: false,
     }));
+    //Update the selected images array.
     setImages(updatedImages);
 
-    // Update the selected count
-    setSelectedCount(0);
+    // Update the selected count to 0.
+    setSelectedImageCount(0);
+  };
+
+  // Define the handleCheckboxClick functionality.
+  const handleCheckboxClick = (e) => {
+    //Prevent event propagation to parent clements.
+    e.stopPropagation();
   };
 
   return (
     <div className="app">
-      <div className="button-container">
+      <div className="container">
         <h3>
-          {selectedCount === 0 ? (
+          {selectedImageCount === 0 ? (
             "Gallery"
           ) : (
             <>
@@ -65,17 +90,18 @@ export default function ImageGallery() {
                 defaultChecked
                 onClick={handleDeselectAll}
               />{" "}
-              {selectedCount} File{selectedCount === 1 ? "" : "s"} Selected
+              {selectedImageCount} File{selectedImageCount === 1 ? "" : "s"}{" "}
+              Selected
             </>
           )}
         </h3>
         <button
-          className={`button ${selectedCount > 0 ? "button" : ""}`}
+          className={`button ${selectedImageCount > 0 ? "button" : ""}`}
           onClick={handleDeselectAll}
         >
-          {selectedCount === 0
+          {selectedImageCount === 0
             ? null
-            : selectedCount === 1
+            : selectedImageCount === 1
             ? "Delete File"
             : "Delete Files"}
         </button>
@@ -83,25 +109,34 @@ export default function ImageGallery() {
       <div className="gallery">
         {images.map((image, index) => (
           <div
-            key={index}
-            className={`image-container ${image.feature ? "feature" : ""}  ${
-              image.selected ? "selected" : ""
+            key={image.id}
+            className={`image-container ${image.selected ? "selected" : ""}  ${
+              image.feature ? "feature" : ""
             }`}
+            draggable={true}
             onDragStart={() => (dragItem.current = index)}
             onDragEnter={() => (dragOverItem.current = index)}
             onDragEnd={handleSort}
-            onClick={() => handleImageClick(index)}
+            onClick={() => handleImageClick(image.id)}
           >
             <img
               src={image.src}
-              alt=""
-              onClick={() => handleImageClick(index)}
+              alt={image.id}
+              onClick={() => handleImageClick(image.id)}
               className={`${image.selected ? "selected" : ""}`}
             />
+            {image.selected && (
+              <input
+                type="checkbox"
+                checked
+                className="checkbox"
+                onClick={handleCheckboxClick}
+              />
+            )}
           </div>
         ))}
         <div className="image-container image-preview">
-          <img alt="Add Images" />
+          <img src="" alt="Add Images" />
           <input
             type="file"
             id="image-upload"

@@ -1,37 +1,24 @@
 .app {
     background-color: rgb(255, 255, 255);
     border-radius: 10px 10px 10px 10px;
-    max-height: 100vh;
-}
-
-.gallery-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
 }
 
 .gallery {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    justify-items: center;
-    align-items: center;
-    padding: 10px 0;
-    row-gap: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
 }
 
 .image-container {
-    width: 90%;
-    height: 100%;
-    border: .5px solid #ccc;
-    border-radius: 10px;
+    width: 150px;
+    height: 150px;
+    margin: 10px 0px 0px 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
     cursor: grab;
-    box-sizing: border-box;
     overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.3s ease-in-out;
+    position: relative;
+    display: inline-block;
 }
 
 .image-container img {
@@ -39,29 +26,34 @@
     max-height: 100%;
 }
 
-.featured {
-    border-color: #f00;
-    box-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
-    transform: scale(1.2);
-}
-
-.selected {
-    border-color: rgb(233, 73, 73);
-    background-color: #383838;
-    /* transition: transform 0.3s ease-in-out; */
-}
-
-.selected:hover {
-    opacity: 0.5;
-    background-color: #383838;
+.image-container:hover img {
+    opacity: 0.75;
+    transition: ease-in-out;
 }
 
 .image-container.feature {
-    border: 2px solid #007BFF;
-    /* transform: scale(1.1); */
+    width: 320px;
+    height: 250px;
 }
 
-.button-container {
+.selected {
+    border: 2px solid black;
+    box-shadow: 2px 2px black;
+    opacity: 0.75;
+}
+
+.selected img {
+    border: none;
+    box-shadow: none;
+}
+
+.checkbox {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.container {
     display: flex;
     justify-content: space-between;
     height: auto;
@@ -74,8 +66,12 @@
 }
 
 .button {
+    cursor: pointer;
+    border: none;
+    font-size: 1em;
+    font-weight: bold;
     background-color: white;
-    color: rgb(255, 6, 6);
+    color: rgba(255, 0, 0, 0.979);
 }
 
 .button:hover {
@@ -99,7 +95,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 10px;
+    margin-left: 20px;
+    margin-bottom: 10px;
 }
 
 .image-preview img {
@@ -109,7 +106,11 @@
 }
 
 @media (max-width: 768px) {
-    .gallery {
-        grid-template-columns: repeat(3, 1fr);
+    .image-container {
+        width: 33%;
+    }
+
+    .image-container.feature {
+        width: 70%;
     }
 }
